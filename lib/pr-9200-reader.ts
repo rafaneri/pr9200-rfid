@@ -34,6 +34,7 @@ export class Pr9200Reader extends EventEmitter {
     writeCommand(packet: Packet, callback?: Function): Q.Promise<{}> {
         let deferred = Q.defer();
         this.queue.push(new CommandItem(packet, deferred));
+        
         if (!this.busy) {
             this.busy = true;
             this.processQueue();
