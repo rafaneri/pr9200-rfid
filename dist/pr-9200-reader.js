@@ -14,6 +14,7 @@ var command_item_1 = require("./command-item");
 var events_1 = require("events");
 var SerialPort = require("serialport");
 var phychips_rcp_1 = require("phychips-rcp");
+var Q = require("q");
 var Pr9200Reader = /** @class */ (function (_super) {
     __extends(Pr9200Reader, _super);
     function Pr9200Reader(path, options) {
@@ -37,11 +38,13 @@ var Pr9200Reader = /** @class */ (function (_super) {
         return _this;
     }
     Pr9200Reader.prototype.writeCommand = function (packet, callback) {
-        this.queue.push(new command_item_1.CommandItem(packet, callback));
-        if (this.busy)
-            return;
-        this.busy = true;
-        this.processQueue();
+        var deferred = Q.defer();
+        this.queue.push(new command_item_1.CommandItem(packet, deferred));
+        if (!this.busy) {
+            this.busy = true;
+            this.processQueue();
+        }
+        return deferred.promise;
     };
     Pr9200Reader.prototype.processQueue = function () {
         var next = this.queue.shift();
@@ -64,12 +67,15 @@ var Pr9200Reader = /** @class */ (function (_super) {
     };
     Pr9200Reader.prototype.onPacket = function (packet) {
         if (packet.isValid()) {
-            if (!this.current) {
-                this.emit('epc', packet.getEpc());
+            if (!this.current || packet.messageType == phychips_rcp_1.MessageTypes.MT_Notification) {
+                this.emit('notification', packet);
             }
             else {
-                if (this.current.packet.messageCode == packet.messageCode && this.current.callback) {
-                    this.current.callback(null, packet);
+                if (this.current.packet.messageCode == packet.messageCode) {
+                    this.current.promise.resolve(packet);
+                }
+                else {
+                    this.current.promise.reject(packet);
                 }
                 this.processQueue();
             }

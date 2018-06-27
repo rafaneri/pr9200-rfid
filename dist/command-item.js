@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var CommandItem = /** @class */ (function () {
-    function CommandItem(packet, callback) {
+    function CommandItem(packet, promise) {
         this.packet = packet;
-        this.callback = callback;
+        this.promise = promise;
     }
     return CommandItem;
 }());

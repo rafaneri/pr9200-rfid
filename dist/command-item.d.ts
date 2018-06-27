@@ -1,6 +1,7 @@
 import { Packet } from 'phychips-rcp';
+import Q = require('q');
 export declare class CommandItem {
     packet: Packet;
-    callback?: Function | undefined;
-    constructor(packet: Packet, callback?: Function | undefined);
+    promise: Q.Deferred<{}>;
+    constructor(packet: Packet, promise: Q.Deferred<{}>);
 }

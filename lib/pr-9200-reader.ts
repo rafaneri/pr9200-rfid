@@ -1,7 +1,8 @@
 import { CommandItem } from './command-item';
 import { EventEmitter } from "events";
 import * as SerialPort from 'serialport';
-import { RcpManager, Packet } from 'phychips-rcp';
+import { RcpManager, Packet, MessageTypes } from 'phychips-rcp';
+import Q = require('q');
 
 export class Pr9200Reader extends EventEmitter {
 
@@ -30,11 +31,15 @@ export class Pr9200Reader extends EventEmitter {
         });
     }
 
-    writeCommand(packet: Packet, callback?: Function): void {
-        this.queue.push(new CommandItem(packet, callback));
-        if (this.busy) return;
-        this.busy = true;
-        this.processQueue();
+    writeCommand(packet: Packet, callback?: Function): Q.Promise<{}> {
+        let deferred = Q.defer();
+        this.queue.push(new CommandItem(packet, deferred));
+        if (!this.busy) {
+            this.busy = true;
+            this.processQueue();
+        }
+
+        return deferred.promise;
     }
 
     private processQueue(): any {
@@ -64,11 +69,13 @@ export class Pr9200Reader extends EventEmitter {
 
     private onPacket(packet: Packet): void {
         if (packet.isValid()) {
-            if (!this.current) {
-                this.emit('epc', packet.getEpc());
+            if (!this.current || packet.messageType == MessageTypes.MT_Notification) {
+                this.emit('notification', packet);
             } else {
-                if (this.current.packet.messageCode == packet.messageCode && this.current.callback) {
-                    this.current.callback(null, packet);
+                if (this.current.packet.messageCode == packet.messageCode) {
+                    this.current.promise.resolve(packet);
+                } else {
+                    this.current.promise.reject(packet);
                 }
                 this.processQueue();
             }

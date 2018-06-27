@@ -64,8 +64,10 @@
     "typings": "^2.1.1"
   },
   "dependencies": {
+    "@types/q": "^1.5.0",
     "@types/serialport": "^6.0.2",
     "phychips-rcp": "^1.1.13",
+    "q": "^1.5.1",
     "serialport": "^6.2.0"
   }
 }
