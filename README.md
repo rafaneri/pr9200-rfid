@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/rafaneri/pr9200-rfid.svg?branch=master)](https://travis-ci.org/rafaneri/pr9200-rfid)
+
 # pr9200-rfid
 PR9200 RFID
 
