@@ -20,9 +20,10 @@ let reader = new pr9200reader.Pr9200Reader('/dev/tty.wchusbserial1d1130', {
 
 reader.on('ready', () => {
     console.log('Reader Connected');
-    reader.writeCommand(phychips.ReaderControlProtocol.startAutoRead2(), () => {
-        console.log('Auto Reader Initialized');
-    });
+    reader.writeCommand(phychips.ReaderControlProtocol.startAutoRead2())
+        .then((packet) => {
+            console.log('Auto Reader Initialized');
+        });
 });
 
 reader.on('epc', (packet) => {
