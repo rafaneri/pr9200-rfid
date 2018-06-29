@@ -42,6 +42,9 @@ var Pr9200Reader = /** @class */ (function (_super) {
             this.port.open();
         }
     };
+    Pr9200Reader.prototype.isOpen = function () {
+        return this.port.isOpen;
+    };
     Pr9200Reader.prototype.close = function () {
         if (this.port.isOpen) {
             this.port.close();

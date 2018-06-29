@@ -1,6 +1,6 @@
 {
   "name": "pr9200-rfid",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "RFID Reader based on Pr9200 Phychip",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

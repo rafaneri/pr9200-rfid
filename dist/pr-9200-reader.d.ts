@@ -11,6 +11,7 @@ export declare class Pr9200Reader extends EventEmitter {
     private current?;
     constructor(path: string, options?: SerialPort.OpenOptions);
     open(): void;
+    isOpen(): boolean;
     close(): void;
     writeCommand(packet: Packet, callback?: Function): Q.Promise<{}>;
     private processQueue;

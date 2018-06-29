@@ -36,6 +36,10 @@ export class Pr9200Reader extends EventEmitter {
             this.port.open();
         }
     }
+    
+    isOpen(): boolean {
+        return this.port.isOpen;
+    }
 
     close(): void {
         if (this.port.isOpen) {
