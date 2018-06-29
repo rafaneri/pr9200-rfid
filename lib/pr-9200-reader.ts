@@ -31,10 +31,22 @@ export class Pr9200Reader extends EventEmitter {
         });
     }
 
+    open(): void {
+        if (!this.port.isOpen) {
+            this.port.open();
+        }
+    }
+
+    close(): void {
+        if (this.port.isOpen) {
+            this.port.close();
+        }
+    }
+
     writeCommand(packet: Packet, callback?: Function): Q.Promise<{}> {
         let deferred = Q.defer();
         this.queue.push(new CommandItem(packet, deferred));
-        
+
         if (!this.busy) {
             this.busy = true;
             this.processQueue();

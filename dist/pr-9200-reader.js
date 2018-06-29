@@ -37,6 +37,16 @@ var Pr9200Reader = /** @class */ (function (_super) {
         });
         return _this;
     }
+    Pr9200Reader.prototype.open = function () {
+        if (!this.port.isOpen) {
+            this.port.open();
+        }
+    };
+    Pr9200Reader.prototype.close = function () {
+        if (this.port.isOpen) {
+            this.port.close();
+        }
+    };
     Pr9200Reader.prototype.writeCommand = function (packet, callback) {
         var deferred = Q.defer();
         this.queue.push(new command_item_1.CommandItem(packet, deferred));
