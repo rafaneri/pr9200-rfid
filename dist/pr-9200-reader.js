@@ -37,6 +37,23 @@ var Pr9200Reader = /** @class */ (function (_super) {
         });
         return _this;
     }
+    Pr9200Reader.getInstance = function (path, options) {
+        var exists = false;
+        var elementIndex = -1;
+        for (var index = 0; index < Pr9200Reader.instances.length; index++) {
+            var element = Pr9200Reader.instances[index];
+            if (element.port.path === path) {
+                exists = true;
+                elementIndex = index;
+                break;
+            }
+        }
+        if (!exists) {
+            Pr9200Reader.instances.push(new Pr9200Reader(path, options));
+            elementIndex = Pr9200Reader.instances.length - 1;
+        }
+        return Pr9200Reader.instances[elementIndex];
+    };
     Pr9200Reader.prototype.open = function () {
         if (!this.port.isOpen) {
             this.port.open();
@@ -94,6 +111,7 @@ var Pr9200Reader = /** @class */ (function (_super) {
             }
         }
     };
+    Pr9200Reader.instances = [];
     return Pr9200Reader;
 }(events_1.EventEmitter));
 exports.Pr9200Reader = Pr9200Reader;

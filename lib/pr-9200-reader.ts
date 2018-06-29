@@ -6,13 +6,14 @@ import Q = require('q');
 
 export class Pr9200Reader extends EventEmitter {
 
+    private static instances: Array<Pr9200Reader> = [];
     private rcpManager: RcpManager;
     private port: SerialPort;
     private queue: Array<CommandItem>;
     private busy: boolean = false;
     private current?: CommandItem;
 
-    constructor(path: string, options?: SerialPort.OpenOptions) {
+    private constructor(path: string, options?: SerialPort.OpenOptions) {
         super();
         this.queue = [];
         this.rcpManager = new RcpManager();
@@ -31,12 +32,30 @@ export class Pr9200Reader extends EventEmitter {
         });
     }
 
+    static getInstance(path: string, options?: SerialPort.OpenOptions) {
+        let exists = false;
+        let elementIndex = -1;
+        for (let index = 0; index < Pr9200Reader.instances.length; index++) {
+            const element = Pr9200Reader.instances[index];
+            if (element.port.path === path) {
+                exists = true;
+                elementIndex = index;
+                break;
+            }
+        }
+        if (!exists) {
+            Pr9200Reader.instances.push(new Pr9200Reader(path, options));
+            elementIndex = Pr9200Reader.instances.length - 1;
+        }
+        return Pr9200Reader.instances[elementIndex];
+    }
+
     open(): void {
         if (!this.port.isOpen) {
             this.port.open();
         }
     }
-    
+
     isOpen(): boolean {
         return this.port.isOpen;
     }

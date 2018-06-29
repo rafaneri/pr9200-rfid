@@ -5,7 +5,7 @@ import Q = require('q');
 
 describe('Pr9200Reader class test', () => {
     it('should be a P9200Reader', () => {
-        const result = new Pr9200Reader('/dev/tty.wchusbserial1d1130', {
+        const result = Pr9200Reader.getInstance('/dev/tty.wchusbserial1d1130', {
             autoOpen: false,
             baudRate: 115200,
             dataBits: 8,
@@ -15,7 +15,7 @@ describe('Pr9200Reader class test', () => {
         expect(result).to.be.instanceof(Pr9200Reader);
     });
     it('should be a true', () => {
-        let reader = new Pr9200Reader('/dev/tty.wchusbserial1d1130', {
+        let reader = Pr9200Reader.getInstance('/dev/tty.wchusbserial1d1130', {
             autoOpen: false,
             baudRate: 115200,
             dataBits: 8,
