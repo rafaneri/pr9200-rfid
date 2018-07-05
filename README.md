@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/rafaneri/pr9200-rfid.svg?branch=master)](https://travis-ci.org/rafaneri/pr9200-rfid)
+[![Coverage Status](https://coveralls.io/repos/github/rafaneri/pr9200-rfid/badge.svg?branch=master)](https://coveralls.io/github/rafaneri/pr9200-rfid?branch=master)
 
 # pr9200-rfid
 PR9200 RFID
