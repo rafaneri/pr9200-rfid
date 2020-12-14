@@ -12,7 +12,7 @@ PR9200 RFID
 const phychips = require('phychips-rcp');
 const pr9200reader = require('./dist');
 
-let reader = new pr9200reader.Pr9200Reader('/dev/tty.wchusbserial1d1130', {
+let reader = pr9200reader.Pr9200Reader.getInstance('/dev/tty.wchusbserial1d1130', {
     baudRate: 115200,
     dataBits: 8,
     stopBits: 1,
@@ -27,7 +27,7 @@ reader.on('ready', () => {
         });
 });
 
-reader.on('epc', (packet) => {
-    console.log(packet);
+reader.on('notification', (packet) => {
+    console.log(packet.getEpc().toString('HEX'));
 });
 ```
