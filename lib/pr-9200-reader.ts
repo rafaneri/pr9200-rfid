@@ -100,7 +100,9 @@ export class Pr9200Reader extends EventEmitter {
     }
 
     private portData(data: any): void {
-        this.rcpManager.dataReceived(data);
+        setTimeout(() => {
+            this.rcpManager.dataReceived(data);
+        }, 0);
     }
 
     private onPacket(packet: Packet): void {
