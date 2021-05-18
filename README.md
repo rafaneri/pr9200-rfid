@@ -4,6 +4,10 @@
 # pr9200-rfid
 PR9200 RFID
 
+## Using the example
+
+Download the repository, edit the port name in example.js file and run **npm install && node example.js**.
+
 ## How to use
 
 ```javascript
